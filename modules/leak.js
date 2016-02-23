@@ -11,12 +11,21 @@ function Request() {
         console.log(data);
     };
 
+    function onData(info) {
+        console.log(info);
+    }
+
     db.on('data', function (info) {
         self.send(info);
-    })
+    });
+
+    this.end = function () {
+        db.removeListener('data', onData)
+    }
 }
 
 setInterval(function(){
     var request = new Request();
+    request.end();
     console.log(process.memoryUsage().heapUsed)
 }, 200);
